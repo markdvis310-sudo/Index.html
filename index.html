@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>InstantEntry | Professional Data Entry & PDF Tools Suite</title>
+  <meta name="description" content="Free professional online tools: QR Code Generator, QR Reader, PDF Merger, Background Remover, Image Upscaler, Case Converter, Word Counter, Duplicate Remover, and more. No signup required. 100% browser-based.">
+  <meta name="keywords" content="Data Entry Tools, QR Code Generator, PDF Merger, Background Remover, Image Upscaler, Word Counter, Online Utilities, InstantEntry, PDF Tools, Barcode Generator">
+  <meta name="author" content="InstantEntry">
+  <meta name="robots" content="index, follow">
+  <!-- Google Fonts + Font Awesome -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- QR Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+  <!-- PDF-lib -->
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+  <!-- Background removal -->
+  <script src="https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.0/dist/background-removal.umd.js"></script>
+  <!-- PDF.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+  <!-- JsBarcode for barcode -->
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+  <!-- Google AdSense - official script -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5050545176887516" crossorigin="anonymous"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(145deg, #f5f7fc 0%, #eef2f8 100%);
+      color: #172b4d;
+      line-height: 1.5;
+    }
+
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb { background: #0052cc; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #003d99; }
+
+    .navbar {
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(0, 82, 204, 0.15);
+      padding: 1rem 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      gap: 1rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    }
+    .brand {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #0052cc 0%, #00b4d8 50%, #0052cc 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-decoration: none;
+      letter-spacing: -0.5px;
+      transition: all 0.3s ease;
+    }
+    .brand:hover {
+      background: linear-gradient(135deg, #003d99 0%, #0096c7 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: #4a5568;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+      padding: 0.5rem 0;
+      position: relative;
+      cursor: pointer;
+    }
+    .nav-links a:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #0052cc, #00b4d8);
+      transition: width 0.3s;
+    }
+    .nav-links a:hover:after, .nav-links a.active:after {
+      width: 100%;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      color: #0052cc;
+    }
+
+    /* Welcome Section - Centered */
+    .welcome-section {
+      background: linear-gradient(135deg, #ffffff 0%, #f0f4ff 100%);
+      padding: 3rem 1.5rem;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(0, 82, 204, 0.08);
+      text-align: center;
+    }
+    .welcome-section:before {
+      content: '';
+      position: absolute;
+      top: -30%;
+      left: -10%;
+      width: 120%;
+      height: 140%;
+      background: radial-gradient(circle, rgba(0,82,204,0.02) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .welcome-card {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(4px);
+      border-radius: 48px;
+      padding: 2.5rem 3rem;
+      box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(0, 82, 204, 0.15);
+      transition: transform 0.3s ease;
+      text-align: center;
+    }
+    .welcome-card:hover {
+      transform: translateY(-4px);
+    }
+    .welcome-card h1 {
+      font-size: 2.6rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #172b4d 0%, #0052cc 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 1rem;
+      letter-spacing: -0.02em;
+    }
+    .welcome-card .lead-text {
+      font-size: 1.05rem;
+      color: #344563;
+      line-height: 1.6;
+      margin-bottom: 1.8rem;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .feature-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 1.5rem 0 1rem;
+      justify-content: center;
+    }
+    .feature-badge {
+      background: linear-gradient(135deg, #eef4ff, #e6edfa);
+      padding: 0.5rem 1.2rem;
+      border-radius: 40px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #0052cc;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      backdrop-filter: blur(4px);
+    }
+    .feature-badge i {
+      font-size: 0.9rem;
+    }
+    .mission-text {
+      color: #5e6c84;
+      font-size: 0.95rem;
+      margin-top: 1rem;
+      padding-top: 0.8rem;
+      border-top: 1px dashed rgba(0, 82, 204, 0.2);
+    }
+    .hero-mini {
+      text-align: center;
+      padding: 1rem 1rem 0.5rem;
+    }
+    .hero-mini h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #172b4d, #0052cc);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 2.5rem;
+    }
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+    .card {
+      background: white;
+      border: none;
+      border-radius: 24px;
+      padding: 1.8rem;
+      transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      text-decoration: none;
+      color: #172b4d;
+      display: block;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      position: relative;
+      overflow: hidden;
+    }
+    .card:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #0052cc, #00b4d8, #f59e0b);
+      border-radius: 24px 24px 0 0;
+      transform: scaleX(0);
+      transition: transform 0.4s;
+    }
+    .card:hover:before {
+      transform: scaleX(1);
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 35px -12px rgba(0, 82, 204, 0.25);
+    }
+    .card-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #eef4ff, #e0e8ff);
+      color: #0052cc;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.75rem;
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 30px;
+    }
+    .card h3 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .card h3 i {
+      background: linear-gradient(135deg, #0052cc, #00b4d8);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .card p {
+      font-size: 0.9rem;
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    /* Did You Know Section - Colorful but elegant */
+    .didyouknow-section {
+      max-width: 1000px;
+      margin: 2rem auto 1rem;
+      background: linear-gradient(125deg, #ffffff 0%, #fef9e6 100%);
+      border-radius: 36px;
+      padding: 2rem 2.5rem;
+      border-left: 8px solid #f59e0b;
+      box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+    }
+    .didyouknow-section:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 20px 32px -12px rgba(245, 158, 11, 0.15);
+    }
+    .didyouknow-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1rem;
+    }
+    .didyouknow-header i {
+      font-size: 2.2rem;
+      color: #f59e0b;
+      background: linear-gradient(135deg, #f59e0b, #eab308);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .didyouknow-header h3 {
+      font-size: 1.7rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #b45309, #f59e0b);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.3px;
+    }
+    .didyouknow-content {
+      color: #3b2e1e;
+      line-height: 1.65;
+    }
+    .didyouknow-content p {
+      margin-bottom: 0.8rem;
+      font-size: 1rem;
+    }
+    .share-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #fef3c7, #fffbeb);
+      padding: 0.5rem 1.2rem;
+      border-radius: 60px;
+      margin-top: 1rem;
+      font-weight: 500;
+      color: #b45309;
+      border: 1px solid #fde68a;
+    }
+    .share-badge i {
+      font-size: 1rem;
+    }
+
+    .tool-page {
+      max-width: 900px;
+      margin: 2rem auto;
+      background: white;
+      border-radius: 32px;
+      padding: 2.5rem;
+      box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0, 82, 204, 0.1);
+    }
+    .tool-title {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #172b4d, #0052cc);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .tool-desc {
+      color: #5e6c84;
+      margin-bottom: 2rem;
+      border-left: 4px solid #0052cc;
+      padding-left: 1rem;
+    }
+    textarea, input, select {
+      width: 100%;
+      padding: 14px 18px;
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      font-family: 'Inter', monospace;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
+      background: #fff;
+      transition: all 0.2s;
+    }
+    textarea:focus, input:focus {
+      outline: none;
+      border-color: #0052cc;
+      box-shadow: 0 0 0 4px rgba(0, 82, 204, 0.1);
+    }
+    button {
+      background: linear-gradient(135deg, #0052cc, #0066ff);
+      color: white;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+      box-shadow: 0 2px 8px rgba(0, 82, 204, 0.2);
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 82, 204, 0.3);
+    }
+    button.secondary {
+      background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+      color: #1e293b;
+      box-shadow: none;
+    }
+    .result-area {
+      background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+      padding: 1.2rem;
+      border-radius: 20px;
+      margin-top: 1.5rem;
+      border: 1px solid #e2e8f0;
+      word-break: break-word;
+    }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid rgba(0, 82, 204, 0.1);
+      color: #7a869a;
+      font-size: 0.8rem;
+      margin-top: 2rem;
+      background: rgba(255,255,255,0.5);
+    }
+    .legal-page {
+      max-width: 900px;
+      margin: 2rem auto;
+      background: white;
+      border-radius: 32px;
+      padding: 2.5rem;
+      box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(0, 82, 204, 0.1);
+    }
+    .legal-page h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #172b4d, #0052cc);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .legal-page h2 {
+      margin-top: 1.5rem;
+      margin-bottom: 0.75rem;
+      font-size: 1.3rem;
+      color: #0052cc;
+    }
+    .legal-page p {
+      margin-bottom: 1rem;
+      color: #344563;
+    }
+    .ad-slot {
+      text-align: center;
+      min-height: 90px;
+      background: transparent;
+      line-height: 0;
+      font-size: 0;
+      margin: 0 auto;
+    }
+    .preview-img { 
+      max-width: 100%; 
+      margin-top: 1rem; 
+      border-radius: 20px; 
+      border: 2px solid #e2e8f0;
+    }
+    .contact-email-card {
+      background: linear-gradient(135deg, #f8fafc, #ffffff);
+      border-radius: 24px;
+      padding: 2rem;
+      margin: 1.5rem 0;
+      text-align: center;
+      border: 1px solid rgba(0, 82, 204, 0.2);
+    }
+    .email-link {
+      font-size: 1.2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #0052cc, #0066ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-decoration: none;
+    }
+    @media (max-width: 700px) {
+      .navbar { flex-direction: column; text-align: center; }
+      .welcome-card { padding: 1.5rem; }
+      .welcome-card h1 { font-size: 1.8rem; }
+      .didyouknow-section { padding: 1.5rem; margin: 1rem; }
+      .didyouknow-header h3 { font-size: 1.3rem; }
+      .tool-page, .legal-page { margin: 1rem; padding: 1.5rem; }
+      .brand { font-size: 1.8rem; }
+      .feature-badges { justify-content: center; }
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #0052cc, #00b4d8, #f59e0b);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="#" id="homeLink" class="brand">✨ InstantEntry</a>
+  <div class="nav-links">
+    <a href="#" data-page="home" class="nav-item active">Tools</a>
+    <a href="#" data-page="privacy" class="nav-item">Privacy</a>
+    <a href="#" data-page="terms" class="nav-item">Terms</a>
+    <a href="#" data-page="about" class="nav-item">About</a>
+    <a href="#" data-page="contact" class="nav-item">Contact</a>
+  </div>
+</nav>
+
+<div id="app-root"></div>
+
+<script>
+  // InstantEntry with centered welcome + Did You Know section
+  console.log("InstantEntry | Full suite with centered welcome message, Did You Know section");
+
+  const tools = [
+    { id: "qr-generator", name: "QR Code Generator", desc: "Create high-resolution QR codes for URLs, text, or WiFi credentials.", badge: "Generator", icon: "fas fa-qrcode", color: "#0052cc" },
+    { id: "qr-reader", name: "QR Code Reader", desc: "Scan QR codes using camera or upload image – instant decoding.", badge: "Reader", icon: "fas fa-camera", color: "#00b4d8" },
+    { id: "barcode-generator", name: "Barcode Generator", desc: "Generate Code-128 barcodes for inventory and product tracking.", badge: "Barcode", icon: "fas fa-barcode", color: "#f59e0b" },
+    { id: "pdf-merger", name: "Merge PDF", desc: "Combine multiple PDF files into one organized document.", badge: "PDF Suite", icon: "fas fa-file-pdf", color: "#ef4444" },
+    { id: "pdf-to-text", name: "PDF to Text", desc: "Extract editable text from any PDF document.", badge: "Extractor", icon: "fas fa-file-alt", color: "#10b981" },
+    { id: "jpg-to-pdf", name: "JPG to PDF", desc: "Convert images (JPG/PNG) into a single PDF file.", badge: "Converter", icon: "fas fa-image", color: "#8b5cf6" },
+    { id: "bg-remover", name: "Background Remover", desc: "AI-powered background removal for clean product photos.", badge: "Image AI", icon: "fas fa-magic", color: "#ec4899" },
+    { id: "image-upscaler", name: "Image Upscaler", desc: "Enhance image resolution 2x with smart canvas upscaling.", badge: "Enhancer", icon: "fas fa-expand", color: "#06b6d4" },
+    { id: "case-converter", name: "Case Converter", desc: "Transform text to UPPER, lower, or Title Case instantly.", badge: "Text Utility", icon: "fas fa-text-height", color: "#3b82f6" },
+    { id: "word-counter", name: "Word Counter", desc: "Count characters, words, sentences for writers & editors.", badge: "Analytics", icon: "fas fa-calculator", color: "#14b8a6" },
+    { id: "duplicate-remover", name: "Duplicate Remover", desc: "Remove duplicate lines from lists, emails, or data.", badge: "Cleaner", icon: "fas fa-list-ul", color: "#f97316" }
+  ];
+
+  function setActiveNav(pageId) {
+    document.querySelectorAll('.nav-item').forEach(link => {
+      if(link.getAttribute('data-page') === pageId) link.classList.add('active');
+      else link.classList.remove('active');
+    });
+  }
+
+  // Renders homepage with centered welcome section + Did You Know at bottom
+  function renderHomepage() {
+    const app = document.getElementById('app-root');
+    if (!app) return;
+    app.innerHTML = `
+      <!-- Centered Welcome Section -->
+      <div class="welcome-section">
+        <div class="welcome-card">
+          <h1>✨ Welcome to InstantEntry</h1>
+          <div class="lead-text">
+            InstantEntry offers a collection of free, easy-to-use online tools designed to help developers, students, and everyday users complete tasks quickly and efficiently. From QR codes and PDF processing to text conversion and image utilities, our tools are fast, secure, and accessible from any device without installation or signup.
+          </div>
+          <div class="feature-badges">
+            <span class="feature-badge"><i class="fas fa-gem"></i> Completely free to use</span>
+            <span class="feature-badge"><i class="fas fa-user-check"></i> No registration required</span>
+            <span class="feature-badge"><i class="fas fa-rocket"></i> Fast & reliable performance</span>
+            <span class="feature-badge"><i class="fas fa-mobile-alt"></i> Works on all devices, including mobile</span>
+          </div>
+          <div class="mission-text">
+            <i class="fas fa-bullseye" style="color:#0052cc; margin-right:8px;"></i> Our mission is to make online tools simple, accessible, and helpful for everyone. Explore our tools below and discover how InstantEntry can save you time and effort.
+          </div>
+        </div>
+      </div>
+      <div id="homeTopAd" class="ad-slot" style="min-height:90px; margin-top: 0.5rem;"></div>
+      <div class="hero-mini">
+        <h2><i class="fas fa-tools"></i> Professional Utilities Suite</h2>
+      </div>
+      <div class="container">
+        <div class="tool-grid" id="toolGrid"></div>
+      </div>
+      <!-- Did You Know Section - Colorful and engaging -->
+      <div class="didyouknow-section">
+        <div class="didyouknow-header">
+          <i class="fas fa-lightbulb"></i>
+          <h3>Did You Know?</h3>
+        </div>
+        <div class="didyouknow-content">
+          <p>🌟 <strong>InstantEntry</strong> isn't just fast and free — it's built to make your life easier. Whether you're generating QR codes, merging PDFs, removing backgrounds, or trying out our other handy tools, you can do it all in seconds.</p>
+          <p>⚡ We're constantly adding new tools and features to save you even more time. <strong>Don't forget to bookmark InstantEntry and check back often for updates!</strong></p>
+          <div class="share-badge">
+            <i class="fas fa-users"></i> Join our community: Share InstantEntry with your friends and help others discover these free tools.
+          </div>
+        </div>
+      </div>
+      <div id="homeBottomAd" class="ad-slot" style="min-height:90px; margin-top: 1rem;"></div>
+      <footer>
+        <p>© 2026 InstantEntry — All tools run locally in your browser. No data is uploaded. Professional utilities for everyday productivity.</p>
+      </footer>
+    `;
+    const grid = document.getElementById('toolGrid');
+    tools.forEach(tool => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="card-badge">${tool.badge}</div>
+        <h3><i class="${tool.icon}" style="background: linear-gradient(135deg, ${tool.color}, #0052cc); -webkit-background-clip: text; background-clip: text; color: transparent;"></i> ${tool.name}</h3>
+        <p>${tool.desc}</p>
+      `;
+      card.addEventListener('click', () => loadTool(tool.id));
+      grid.appendChild(card);
+    });
+    if(document.getElementById('homeTopAd')) {
+      const topAd = document.getElementById('homeTopAd');
+      topAd.innerHTML = '<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5050545176887516" data-ad-slot="1234567890" data-ad-format="auto"></ins>';
+      if(window.adsbygoogle) { try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e){} }
+    }
+    if(document.getElementById('homeBottomAd')) {
+      const bottomAd = document.getElementById('homeBottomAd');
+      bottomAd.innerHTML = '<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5050545176887516" data-ad-slot="9876543210" data-ad-format="auto"></ins>';
+      if(window.adsbygoogle) { try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e){} }
+    }
+    setActiveNav('home');
+  }
+
+  function renderPrivacy() {
+    const app = document.getElementById('app-root');
+    app.innerHTML = `
+      <div class="legal-page">
+        <h1><i class="fas fa-shield-alt" style="color:#0052cc;"></i> Privacy Policy</h1>
+        <p>At InstantEntry, your privacy is our top priority. This Privacy Policy explains how we handle your data when you use our tools.</p>
+        <h2>1. No Data Collection</h2>
+        <p>InstantEntry operates entirely within your browser. We do not upload, store, or process any files on external servers. All processing happens locally on your device.</p>
+        <h2>2. Cookies and Advertising</h2>
+        <p>We use Google AdSense to display advertisements. AdSense may use cookies to serve personalized ads based on your previous visits. No personal data is collected by InstantEntry itself.</p>
+        <h2>3. Third-Party Libraries</h2>
+        <p>Our tools use open-source libraries that run client-side. No data is transmitted to third parties except standard ad requests from Google.</p>
+        <h2>4. Children's Privacy</h2>
+        <p>Our services are intended for general audiences and do not knowingly collect information from children under 13.</p>
+        <div class="ad-slot" id="privacyAd" style="margin-top:2rem; min-height:90px;"></div>
+      </div>
+      <footer>© 2026 InstantEntry — Privacy First, Always</footer>
+    `;
+    const privacyAd = document.getElementById('privacyAd');
+    if(privacyAd) {
+      privacyAd.innerHTML = '<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5050545176887516" data-ad-slot="1111111111" data-ad-format="auto"></ins>';
+      if(window.adsbygoogle) try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e){}
+    }
+    setActiveNav('privacy');
+  }
+
+  function renderTerms() {
+    const app = document.getElementById('app-root');
+    app.innerHTML = `
+      <div class="legal-page">
+        <h1><i class="fas fa-file-contract"></i> Terms & Conditions</h1>
+        <p>Welcome to InstantEntry. By accessing or using our website and tools, you agree to comply with these Terms.</p>
+        <h2>1. Use of Tools</h2>
+        <p>All tools are provided "as is" without warranties. You agree to use InstantEntry for lawful purposes only. Misuse of tools or attempting to upload malicious content is prohibited.</p>
+        <h2>2. Intellectual Property</h2>
+        <p>InstantEntry owns the rights to the UI design, branding, and original code. You may not copy or resell the service. Open-source libraries retain their respective licenses.</p>
+        <h2>3. Limitation of Liability</h2>
+        <p>InstantEntry shall not be liable for any indirect, incidental, or consequential damages arising from tool usage. All processing occurs locally; we are not responsible for data loss.</p>
+        <h2>4. Changes to Terms</h2>
+        <p>We reserve the right to modify these Terms at any time. Continued use constitutes acceptance.</p>
+        <h2>5. Governing Law</h2>
+        <p>These Terms shall be governed by the laws of Delaware, USA.</p>
+        <div class="ad-slot" id="termsAd" style="margin-top:2rem; min-height:90px;"></div>
+      </div>
+      <footer>© 2026 InstantEntry — Terms & Conditions apply</footer>
+    `;
+    const termsAd = document.getElementById('termsAd');
+    if(termsAd) {
+      termsAd.innerHTML = '<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5050545176887516" data-ad-slot="5555555555" data-ad-format="auto"></ins>';
+      if(window.adsbygoogle) try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e){}
+    }
+    setActiveNav('terms');
+  }
+
+  function renderAbout() {
+    const app = document.getElementById('app-root');
+    app.innerHTML = `
+      <div class="legal-page">
+        <h1><i class="fas fa-info-circle" style="color:#0052cc;"></i> About InstantEntry</h1>
+        <p><strong>InstantEntry</strong> is a comprehensive suite of digital utilities designed for data entry professionals, content creators, and everyday users who need fast, reliable, and private online tools.</p>
+        <h2>Our Mission</h2>
+        <p>We believe essential productivity tools should be free, private, and accessible to everyone. Every tool runs directly in your browser, ensuring your sensitive documents never leave your computer.</p>
+        <h2>Why Choose InstantEntry?</h2>
+        <p>✓ 100% Browser‑Based — No file uploads, maximum privacy.<br>✓ Professional Grade — High-quality PDF, image, and text processing.<br>✓ Zero Server Dependencies — All functionality uses open-source libraries.<br>✓ Mobile Friendly — Use on any device.<br>✓ Completely Free — No subscriptions, no hidden fees.</p>
+        <div class="ad-slot" id="aboutAd" style="margin-top:2rem; min-height:90px;"></div>
+      </div>
+      <footer>© 2026 InstantEntry — Built for efficiency</footer>
+    `;
+    const aboutAd = document.getElementById('aboutAd');
+    if(aboutAd) {
+      aboutAd.innerHTML = '<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5050545176887516" data-ad-slot="2222222222" data-ad-format="auto"></ins>';
+      if(window.adsbygoogle) try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e){}
+    }
+    setActiveNav('about');
+  }
+
+  function renderContact() {
+    const app = document.getElementById('app-root');
+    app.innerHTML = `
+      <div class="legal-page">
+        <h1><i class="fas fa-envelope" style="color:#0052cc;"></i> Contact Us</h1>
+        <p>Have questions, feedback, or partnership inquiries? We'd love to hear from you. Our team responds within 24 hours.</p>
+        <div class="contact-email-card">
+          <i class="fas fa-at fa-2x" style="color:#0052cc;"></i>
+          <h2 style="margin: 0.75rem 0; font-size: 1.3rem; color:#0052cc;">General Support</h2>
+          <a href="mailto:supportentry1@gmail.com" class="email-link">supportentry1@gmail.com</a>
+          <p style="margin-top: 1rem; font-size: 0.9rem; color:#64748b;">For all inquiries including technical support, feedback, and partnership opportunities.</p>
+        </div>
+        <div class="ad-slot" id="contactAd" style="margin-top:2rem; min-height:90px;"></div>
+      </div>
+      <footer>© 2026 InstantEntry — We're here to help</footer>
+    `;
+    const contactAd = document.getElementById('contactAd');
+    if(contactAd) {
+      contactAd.innerHTML = '<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5050545176887516" data-ad-slot="3333333333" data-ad-format="auto"></ins>';
+      if(window.adsbygoogle) try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e){}
+    }
+    setActiveNav('contact');
+  }
+
+  async function loadTool(toolId) {
+    const tool = tools.find(t => t.id === toolId);
+    if(!tool) { renderHomepage(); return; }
+    const app = document.getElementById('app-root');
+    app.innerHTML = `<div class="tool-page" id="toolSpecificPage"></div><div id="toolPageAd" class="ad-slot" style="min-height:90px; margin-top:1rem;"></div><footer><p>© 2026 InstantEntry — All processing happens locally on your device.</p></footer>`;
+    const container = document.getElementById('toolSpecificPage');
+    container.innerHTML = `<h1 class="tool-title"><i class="${tool.icon}" style="margin-right:12px; color:${tool.color}"></i> ${tool.name}</h1><div class="tool-desc">${tool.desc}</div><div id="tool-ui"></div><button id="backHomeBtn" class="secondary" style="margin-top:1.5rem;"><i class="fas fa-arrow-left"></i> Back to all tools</button>`;
+    document.getElementById('backHomeBtn')?.addEventListener('click', () => renderHomepage());
+    const uiDiv = document.getElementById('tool-ui');
+    switch(toolId) {
+      case 'qr-generator': buildQRGenerator(uiDiv); break;
+      case 'qr-reader': buildQRReader(uiDiv); break;
+      case 'barcode-generator': buildBarcodeGen(uiDiv); break;
+      case 'pdf-merger': buildPDFMerger(uiDiv); break;
+      case 'pdf-to-text': buildPDFToText(uiDiv); break;
+      case 'jpg-to-pdf': buildJPGtoPDF(uiDiv); break;
+      case 'bg-remover': buildBgRemover(uiDiv); break;
+      case 'image-upscaler': buildImageUpscaler(uiDiv); break;
+      case 'case-converter': buildCaseConverter(uiDiv); break;
+      case 'word-counter': buildWordCounter(uiDiv); break;
+      case 'duplicate-remover': buildDuplicateRemover(uiDiv); break;
+      default: uiDiv.innerHTML = '<p>Tool interface ready.</p>';
+    }
+    const toolAd = document.getElementById('toolPageAd');
+    if(toolAd) {
+      toolAd.innerHTML = '<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5050545176887516" data-ad-slot="4444444444" data-ad-format="auto"></ins>';
+      if(window.adsbygoogle) try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e){}
+    }
+    setActiveNav('home');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function buildQRGenerator(ui) { ui.innerHTML = `<label>Text or URL:</label><input type="text" id="qrText" value="https://instantentry.com"><div id="qrcodeContainer" style="margin:1rem 0; display:flex; justify-content:center;"></div><button id="genQRBtn">Generate QR Code</button>`; document.getElementById('genQRBtn').onclick = () => { const val = document.getElementById('qrText').value; const container = document.getElementById('qrcodeContainer'); container.innerHTML = ''; if(val) new QRCode(container, { text: val, width: 220, height: 220, colorDark: "#0052cc", colorLight: "#ffffff" }); }; document.getElementById('genQRBtn').click(); }
+  function buildQRReader(ui) { ui.innerHTML = `<div id="qr-reader-container" style="width:100%; max-width:500px;"></div><input type="file" id="qrImageUpload" accept="image/*"><div class="result-area"><strong>Decoded:</strong> <span id="decodedText">-</span></div>`; const html5QrCode = new Html5Qrcode("qr-reader-container"); document.getElementById('qrImageUpload').onchange = (e) => { if(e.target.files[0]) html5QrCode.scanFile(e.target.files[0], true).then(d => document.getElementById('decodedText').innerText = d).catch(()=>document.getElementById('decodedText').innerText="No QR"); }; const btn = document.createElement('button'); btn.innerText = "Start Camera"; btn.onclick = () => html5QrCode.start({ facingMode: "environment" }, { fps: 10 }, (d) => document.getElementById('decodedText').innerText = d); ui.appendChild(btn); }
+  function buildBarcodeGen(ui) { ui.innerHTML = `<input id="barcodeData" placeholder="Data" value="INSTANT-001"><canvas id="barcodeCanvas" style="margin:1rem 0;"></canvas><button id="drawBarcode">Generate</button>`; document.getElementById('drawBarcode').onclick = () => JsBarcode(document.getElementById('barcodeCanvas'), document.getElementById('barcodeData').value, { format: "CODE128", lineColor: "#0052cc", width: 2, height: 80 }); document.getElementById('drawBarcode').click(); }
+  async function buildPDFMerger(ui) { ui.innerHTML = `<input type="file" id="pdfInput1" accept=".pdf" multiple><button id="mergeBtn">Merge PDFs</button><div id="mergeResult"></div>`; document.getElementById('mergeBtn').onclick = async () => { const files = document.getElementById('pdfInput1').files; if(files.length<2) { document.getElementById('mergeResult').innerHTML="Select ≥2 PDFs"; return; } const { PDFDocument } = PDFLib; const merged = await PDFDocument.create(); for(const f of files) { const pdf=await PDFDocument.load(await f.arrayBuffer()); const pages=await merged.copyPages(pdf, pdf.getPageIndices()); pages.forEach(p=>merged.addPage(p)); } const blob=new Blob([await merged.save()], {type:'application/pdf'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='merged.pdf'; a.click(); document.getElementById('mergeResult').innerHTML="✅ Merged PDF ready"; }; }
+  async function buildPDFToText(ui) { ui.innerHTML = `<input type="file" id="pdfTextFile" accept=".pdf"><button id="extractBtn">Extract Text</button><div id="textOutput" class="result-area"></div>`; window.pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js"; document.getElementById('extractBtn').onclick = async () => { const file = document.getElementById('pdfTextFile').files[0]; if(!file) return; const pdf = await window.pdfjsLib.getDocument({ data: await file.arrayBuffer() }).promise; let text=""; for(let i=1;i<=pdf.numPages;i++) { const page=await pdf.getPage(i); const content=await page.getTextContent(); text+=content.items.map(c=>c.str).join(' ')+"\n"; } document.getElementById('textOutput').innerHTML = `<pre style="white-space:pre-wrap">${text.substring(0,3000)}</pre>`; }; }
+  async function buildJPGtoPDF(ui) { ui.innerHTML = `<input type="file" id="jpgFiles" accept="image/*" multiple><button id="convertToPdf">Convert to PDF</button>`; document.getElementById('convertToPdf').onclick = async () => { const files = Array.from(document.getElementById('jpgFiles').files); if(!files.length) return; const { PDFDocument } = PDFLib; const pdfDoc = await PDFDocument.create(); for(const f of files) { const bytes = await f.arrayBuffer(); const image = f.type.includes('jpeg') ? await pdfDoc.embedJpg(bytes) : await pdfDoc.embedPng(bytes); const page = pdfDoc.addPage([image.width, image.height]); page.drawImage(image, { x:0, y:0, width:image.width, height:image.height }); } const blob = new Blob([await pdfDoc.save()], {type:'application/pdf'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='images.pdf'; a.click(); }; }
+  function buildBgRemover(ui) { ui.innerHTML = `<input type="file" id="bgImage" accept="image/*"><button id="removeBgBtn">Remove Background</button><img id="bgPreview" class="preview-img">`; document.getElementById('removeBgBtn').onclick = async () => { const file = document.getElementById('bgImage').files[0]; if(!file) return; const img = new Image(); img.src = URL.createObjectURL(file); img.onload = async () => { const blob = await window.removeBackground(img); document.getElementById('bgPreview').src = URL.createObjectURL(blob); }; }; }
+  function buildImageUpscaler(ui) { ui.innerHTML = `<input type="file" id="upscaleImage" accept="image/*"><button id="upscaleBtn">2x Upscale</button><canvas id="upscaledCanvas" style="max-width:100%; margin-top:1rem;"></canvas>`; document.getElementById('upscaleBtn').onclick = () => { const file = document.getElementById('upscaleImage').files[0]; if(!file) return; const img = new Image(); img.onload = () => { const c=document.getElementById('upscaledCanvas'); c.width=img.width*2; c.height=img.height*2; c.getContext('2d').drawImage(img,0,0,c.width,c.height); }; img.src = URL.createObjectURL(file); }; }
+  function buildCaseConverter(ui) { ui.innerHTML = `<textarea id="caseInput" rows="4" placeholder="Enter text..."></textarea><button id="upperBtn">UPPER</button><button id="lowerBtn">lower</button><button id="titleBtn">Title Case</button><div class="result-area" id="caseOutput"></div>`; const inp=()=>document.getElementById('caseInput').value; document.getElementById('upperBtn').onclick=()=>document.getElementById('caseOutput').innerText=inp().toUpperCase(); document.getElementById('lowerBtn').onclick=()=>document.getElementById('caseOutput').innerText=inp().toLowerCase(); document.getElementById('titleBtn').onclick=()=>document.getElementById('caseOutput').innerText=inp().replace(/\b\w/g,l=>l.toUpperCase()); }
+  function buildWordCounter(ui) { ui.innerHTML = `<textarea id="wordTextArea" rows="5" placeholder="Type something..."></textarea><div class="result-area" id="statsArea">Characters: 0 | Words: 0 | Sentences: 0</div>`; const area=document.getElementById('wordTextArea'); area.addEventListener('input',()=>{ const t=area.value; const c=t.length; const w=t.trim()?t.trim().split(/\s+/).length:0; const s=t.split(/[.!?]+/).filter(s=>s.trim().length>0).length; document.getElementById('statsArea').innerText=`Characters: ${c} | Words: ${w} | Sentences: ${s}`; }); }
+  function buildDuplicateRemover(ui) { ui.innerHTML = `<textarea id="dupInput" rows="6" placeholder="Paste list (one per line)"></textarea><button id="removeDupBtn">Remove Duplicates</button><div class="result-area" id="cleanOutput"></div>`; document.getElementById('removeDupBtn').onclick = () => { const lines = document.getElementById('dupInput').value.split(/\r?\n/); const unique = [...new Map(lines.map(l=>[l,l])).values()]; document.getElementById('cleanOutput').innerHTML = unique.join('<br>') + `<br><button id="copyCleanBtn">Copy</button>`; document.getElementById('copyCleanBtn')?.addEventListener('click',()=>navigator.clipboard.writeText(unique.join('\n'))); }; }
+
+  function navigateTo(page) {
+    if(page === 'home') renderHomepage();
+    else if(page === 'privacy') renderPrivacy();
+    else if(page === 'terms') renderTerms();
+    else if(page === 'about') renderAbout();
+    else if(page === 'contact') renderContact();
+    else renderHomepage();
+  }
+
+  document.querySelectorAll('.nav-item').forEach(link => {
+    link.addEventListener('click', (e) => { e.preventDefault(); navigateTo(link.getAttribute('data-page')); });
+  });
+  document.getElementById('homeLink')?.addEventListener('click', (e) => { e.preventDefault(); navigateTo('home'); });
+
+  renderHomepage();
+</script>
+</body>
+</html>
